@@ -150,3 +150,18 @@ Thank you!
 </a>&nbsp;&nbsp;
 
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/fl4viooliveira/django_ecommerce/blob/master/LICENSE) file for details.
+
+## Run for Mac:
+```
+brew install zlib
+brew install bzip2
+brew install openssl
+export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib -L/usr/local/opt/openssl@3/lib"
+export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include -I/usr/local/opt/openssl@3/include"
+```
+
+## Todo
+ - Add pagination for products page (by 5 items per page)
+ - Add search for products (by product title)
+ - Add price filter (as range)
+ - Auto generate slug (in django admin)

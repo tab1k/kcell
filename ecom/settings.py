@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from typing import (List, Dict, Tuple, Any)
 
@@ -7,8 +8,8 @@ env = Env()
 
 BASE_DIR: Path = Path(__file__).resolve().parent.parent
 SECRET_KEY: str = env.str('SECRET_KEY', 'default-secret-key')
-DEBUG: bool = False
-ALLOWED_HOSTS: List[str] = ['www.domain.com', ]
+DEBUG: bool = True
+ALLOWED_HOSTS: List[str] = ['*', ]
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 ROOT_URLCONF: str = 'ecom.urls'
@@ -49,7 +50,7 @@ INSTALLED_APPS = [
 
 
 DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL', '')
-NOTIFY_EMAIL: str = env('NOTIFY_EMAIL', '')
+NOTIFY_EMAIL: str = env.str('NOTIFY_EMAIL', '')
 
 # Middleware
 # region
@@ -63,6 +64,8 @@ MIDDLEWARE: List[str] = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 # endregion
+
+PROJECT_ROOT = os.path.normpath(os.path.join(BASE_DIR, ".."))
 
 # Templates
 # region
@@ -85,12 +88,8 @@ TEMPLATES: List[Dict[str, Any]] = [{
 # region
 DATABASES: Dict[str, Dict[str, Any]] = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env.str('DATABASE_NAME', 'django_ecommerce'),
-        'USER': env.str('DATABASE_USER', 'postgres'),
-        'PASSWORD': env.str('DATABASE_PASSWORD', '12345'),
-        'HOST': env.str('DATABASE_HOST', 'localhost'),
-        'PORT': env.str('DATABASE_PORT', '5432'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 # endregion
@@ -159,22 +158,4 @@ PAYPAL_SECRET_KEY: str = env.str('PAYPAL_LIVE_SECRET_KEY', '')
 STRIPE_PUBLIC_KEY: str = env.str('STRIPE_PUBLIC_KEY', '')
 STRIPE_SECRET_KEY: str = env.str('STRIPE_SECRET_KEY', '')
 STRIPE_WEBHOOK_SECRET: str = env.str('STRIPE_WEBHOOK_SECRET', '')
-# endregion
-
-# Session
-# region
-SESSION_COOKIE_SECURE: bool = True
-# endregion
-
-# Secure
-# region
-SECURE_BROWSER_XSS_FILTER: bool = True
-SECURE_CONTENT_TYPE_NOSNIFF: bool = True
-SECURE_HSTS_INCLUDE_SUBDOMAINS: bool = True
-SECURE_HSTS_SECONDS: int = 31536000  # 365 days = 1 year
-SECURE_REDIRECT_EXEMPT: List[str] = []
-SECURE_SSL_REDIRECT: bool = True
-SECURE_PROXY_SSL_HEADER: Tuple[Tuple[str, str], ...] = (
-    ('HTTP_X_FORWARDED_PROTO', 'https'),
-)
 # endregion
