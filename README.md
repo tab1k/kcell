@@ -165,3 +165,4 @@ export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include -I
  - Add search for products (by product title)
  - Add price filter (as range)
  - Auto generate slug (in django admin)
+# kcell

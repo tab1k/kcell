@@ -27,10 +27,15 @@ class AddressAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Order)
-admin.site.register(Product)
 admin.site.register(Payment)
 admin.site.register(Category)
 admin.site.register(OrderItem)
 admin.site.register(SizeVariation)
 admin.site.register(StripePayment)
 admin.site.register(ColourVariation)
+
+
+class ProductAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('title',)}
+
+admin.site.register(Product, ProductAdmin)

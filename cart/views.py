@@ -2,7 +2,6 @@ import datetime
 import json
 from logging import getLogger
 from typing import Any, Dict, Union, List
-
 import stripe
 from django.conf import settings
 from django.contrib import messages
@@ -36,22 +35,37 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class ProductListView(generic.ListView):
-    template_name: str = 'cart/product_list.html'
+    template_name = 'cart/product_list.html'
+    model = Product
+    context_object_name = 'object_list'
+    paginate_by = 10
 
     def get_queryset(self):
-        qs = Product.objects.all()
+        qs = super().get_queryset()
         category = self.request.GET.get('category', None)
-        if not category:
-            return qs
-        return qs.filter(
-            Q(primary_category__name=category) |
-            Q(secondary_categories__name=category)
-        ).distinct()
+        query = self.request.GET.get('q', None)
+        min_price = self.request.GET.get('min_price', None)
+        max_price = self.request.GET.get('max_price', None)
+
+        if query:
+            qs = qs.filter(Q(title__icontains=query) | Q(description__icontains=query))
+
+        if category:
+            qs = qs.filter(Q(primary_category__name=category) | Q(secondary_categories__name=category))
+
+        if min_price and max_price:
+            qs = qs.filter(price__range=(min_price, max_price))
+
+        return qs.distinct()
 
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
-        context = super(ProductListView, self).get_context_data(**kwargs)
-        context.update({"categories": Category.objects.values("name")})
+        context = super().get_context_data(**kwargs)
+        context["categories"] = Category.objects.values("name")
+        context["min_price"] = self.request.GET.get('min_price', None)
+        context["max_price"] = self.request.GET.get('max_price', None)
         return context
+    
+        
 
 
 class ProductDetailView(generic.FormView):

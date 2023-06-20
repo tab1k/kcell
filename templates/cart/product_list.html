@@ -18,6 +18,21 @@
     <div class="container">
         <div class="row mb-5">
             <div class="col-md-9 mb-4">
+                <form method="get">
+                    {% csrf_token %}
+                    <p><input class='textinput textInput form-control' type="search" name="q" placeholder="Поиск по сайту"> 
+                        <br>
+                    <input class='btn btn-primary btn-lg btn-block' type="submit" value="Найти">
+                    </p>
+                    <p>
+                        <label for="min_price">Мин. цена:</label>
+                        <input class='textinput textInput form-control' type="number" id="min_price" name="min_price" value="{{ min_price }}">
+                        <label for="max_price">Макс. цена:</label>
+                        <input class='textinput textInput form-control' type="number" id="max_price" name="max_price" value="{{ max_price }}">
+                        <br>
+                        <input class='btn btn-primary btn-lg btn-block' type="submit" value="Применить">
+                    </p>
+                </form>
                 <div class="row mb-5">
                     {% for product in object_list %}
                         <div class="col-sm-6 col-md-6 col-lg-4 mb-4" data-aos='fade-up'>
