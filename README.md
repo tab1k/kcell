@@ -166,3 +166,4 @@ export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include -I
  - Add price filter (as range)
  - Auto generate slug (in django admin)
 # kcell
+# kcell
