@@ -167,3 +167,4 @@ export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include -I
  - Auto generate slug (in django admin)
 # kcell
 # kcell
+# kcell
